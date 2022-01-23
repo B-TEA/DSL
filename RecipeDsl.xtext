@@ -1,0 +1,68 @@
+grammar de.thluebeck.moderneswe.RecipeDsl with org.eclipse.xtext.common.Terminals
+
+generate recipeDsl "http://www.thluebeck.de/moderneswe/RecipeDsl"
+
+Model:
+	tools+=Tools
+	ingredients=Ingredients
+	instructions=Instructions
+	"etVoila"
+;
+
+
+Tools:
+	'Tools'
+	(tool+=Tool)+
+;
+
+Tool:
+	name=ID
+;
+	
+	
+Ingredients:
+	'Ingredients' 
+	(ingredient+=Ingredient)+
+;
+
+Ingredient:
+	name=ID
+	amount=INT
+	meassurement=MEASSUREMENT
+;
+
+Instructions:
+	'Instructions' 
+	(type+=(Use|Cook|Blend|Transfer|Apply))+
+;
+
+Use:
+	'Use'
+	tool=[Tool]
+;
+Cook:
+	'Cook' 
+	('on' temperature=TEMPERATURE 'temperature')
+	('until' condition=STRING | 'for' time=INT timeunit=TIMEUNIT )
+;
+
+Blend:
+	'Blend'
+	'until' condition=STRING
+;
+
+Transfer:
+	'Transfer'
+	('from' toolfrom=[Tool])
+	('to' toolTo=[Tool])
+;
+
+Apply:
+	'Apply'
+	(ingredient=[Ingredient])
+;
+
+enum MEASSUREMENT : G | KG | CUP | TEESPOON | TABLESPOON | L | ML | DRIZZLE | PIECE;
+enum TIMEUNIT : MINUTES | HOURS;
+enum TEMPERATURE : LOW | MEDIUM | HOT;
+
